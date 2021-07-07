@@ -1,0 +1,105 @@
+@import "../variables";
+@import "../mediaQuery";
+
+.inventory-landing-page {
+  .inventory-topbar {
+    border-bottom: 1px solid $box-shadow-color;
+    min-height: 3em;
+    padding: 0.5em;
+    background: aliceblue;
+  }
+  .body-section {
+    .main-area {
+      margin: 0.5em 2em;
+      .create-inventory-details {
+        border: 1px solid $border-color;
+        .heading-add-inventory {
+          padding: 0.1em 2em;
+        }
+        .inventory-input {
+          border: 1px solid $box-shadow-color;
+          height: 3em;
+          margin: 1em;
+          width: 100%;
+        }
+        .custom-button {
+          border: 1px solid $box-shadow-color;
+          background: #00C851;
+          align-items: center;
+          height: 2.5em;
+          border-radius: 5px;
+          margin: 1em;
+        }
+        .form {
+          padding: 0.8em 3em;
+        }
+        label {
+          padding: 1em;
+        }
+      }
+      .update-inventory-details {
+        border: 1px solid $border-color;
+        .inventory-input {
+          border: 1px solid $box-shadow-color;
+          height: 3em;
+          margin: 1em;
+          width: 100%;
+        }
+        .custom-button {
+          background: #0275d8;
+          align-items: center;
+          height: 2.5em;
+          border-radius: 5px;
+          border: 1px solid $box-shadow-color;
+          margin: 1em;
+        }
+        form {
+          padding: 0.8em 3em;
+        }
+        label {
+          padding: 1em;
+        }
+      }
+    }
+    .inventory-list {
+      margin: 0.5em 2em;
+      .list-inventories {
+        border: 1px solid $box-shadow-color;
+        .update-custom-button {
+          border: 1px solid $box-shadow-color;
+          background:  blue;
+          height: 2.5em;
+          border-radius: 5px;
+          margin: 1em;
+        }
+        .delete-custom-button {
+          border: 1px solid $box-shadow-color;
+          background:  #d9534f;
+          height: 2.5em;
+          border-radius: 5px;
+          margin: 1em;
+        }
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+
+          .table-header {
+            background: aliceblue;
+            .no-inventories {
+              padding: 1em;
+            }
+          }
+          td {
+            padding: 4px;
+          }
+          th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
+        }
+      }
+    }
+  }
+}
