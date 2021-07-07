@@ -1,10 +1,6 @@
 import React, { Fragment } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-/**
- * @description SnackInfo Component
- * @param {*} props
- */
 
 const SnackInfo = ({ snackInfo, handleClose }) => {
     const {

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import "../../../styles/Landing/Landing.scss";
 import firebase from "../../../utils/firebase";
-import { Modal, Button } from 'antd';
+import {Modal, Button, message} from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import { Input } from 'antd';
 import {InputLabel} from "@material-ui/core";
 
 const { TextArea } = Input;
 
-const Landing = ({ history }) => {
+const Landing = () => {
     const [inventories, setInventories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState("");
@@ -48,10 +48,10 @@ const Landing = ({ history }) => {
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value)
     }
-    const ref = firebase.firestore().collection("inventories")
+    const collection = firebase.firestore().collection("inventories")
     const getInventories = () => {
         setLoading(true);
-        ref.onSnapshot((querySnapshot) => {
+        collection.onSnapshot((querySnapshot) => {
             const items = [];
             querySnapshot.forEach((doc) => {
                 items.push(doc.data());
@@ -62,28 +62,29 @@ const Landing = ({ history }) => {
     }
     // ADD AN INVENTORY
     const addInventory = (newInventory) => {
-        ref
+        collection
             .doc(newInventory.id)
             .set(newInventory)
             .catch((err) => {
-                console.error(err);
+                message.error(err, 5);
             })
     }
     // EDIT AN INVENTORY
     const editInventory = (updatedInventory) => {
-        ref
+        collection
             .doc(updatedInventory.id)
             .update(updatedInventory)
             .catch((err) => {
-                console.error(err);
+                message.error(err, 5);
             })
     }
     // DELETE AN INVENTORY
     const deleteInventory = (inventory) => {
-        ref.doc(inventory.id)
+        collection
+            .doc(inventory.id)
             .delete()
             .catch((err) => {
-                console.log(err);
+                message.error(err, 5)
             })
     }
     useEffect(() => {
@@ -101,10 +102,9 @@ const Landing = ({ history }) => {
                     <h2>Inventory Keeping Web App</h2>
                 </div>
             </div>
-            <center><strong><h2>Inventory Records</h2></strong></center>
+            <center><h2 className="body-title">Inventory Records</h2></center>
             <div className="body-section">
                 <div className="inventory-list">
-                    <h3>List of Inventories</h3><br/>
                     <div className="list-inventories">
                         <table>
                             <tr className="table-header">
@@ -139,7 +139,7 @@ const Landing = ({ history }) => {
                                         title="Delete Inventory"
                                         visible={modalVisible}
                                         onOk={() => { deleteInventory(inventory); setModalVisible(false)}} onCancel={handleCancel}>
-                                        <h3>Are you sure you want to delete this inventory</h3>
+                                        <h3>Are you sure you want to delete this inventory ??</h3>
                                     </Modal>
                                     <Button className="delete-button" type="danger" onClick={showModal}>
                                         Delete
@@ -161,7 +161,7 @@ const Landing = ({ history }) => {
                             <TextArea placeholder="Fill your description" allowClear onChange={handleDescriptionChange} />
                         </Modal>
                         <Button className="create-button" onClick={createShowModal}>
-                            Create
+                            Create a new inventory
                         </Button>
                 </div>
             </div>
