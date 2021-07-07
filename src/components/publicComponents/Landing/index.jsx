@@ -19,7 +19,7 @@ const Landing = ({ history }) => {
     const [updateModalVisible, setUpdateModalVisible] = useState(false);
 
     const showModal = () => {
-        setCreateModalVisible(true);
+        setModalVisible(true);
     };
 
     const createShowModal = () => {
@@ -27,11 +27,11 @@ const Landing = ({ history }) => {
     };
 
     const updateShowModal = () => {
-        setCreateModalVisible(true);
+        setUpdateModalVisible(true);
     };
 
     const handleCancel = () => {
-        setCreateModalVisible(false);
+        setModalVisible(false);
     };
 
     const createHandleCancel = () => {
@@ -39,7 +39,7 @@ const Landing = ({ history }) => {
     };
 
     const updateHandleCancel = () => {
-        setCreateModalVisible(false);
+        setUpdateModalVisible(false);
     };
 
     const handleTitleChange = (e) => {
@@ -116,67 +116,53 @@ const Landing = ({ history }) => {
                                 <tr>
                                     <h4 className="no-inventories">You have no inventories</h4>
                                 </tr>
-                            ):
-                            inventories.map((inventory) => (
+                            ): inventories.map((inventory) => (
                             <tr>
-                                    <td><h4>{inventory.title}</h4></td>
-                                    <td><h4>{inventory.description}</h4></td>
+                                <td><h4>{inventory.title}</h4></td>
+                                <td><h4>{inventory.description}</h4></td>
                                 <td>
                                     <Modal
                                         title="Update Inventory"
                                         visible={updateModalVisible}
-                                        onOk={() => { editInventory({title: inventory.title, description, id: inventory.id}); setUpdateModalVisible(false)}} onCancel={updateHandleCancel}>
+                                        onOk={() => { editInventory({title, description, id: inventory.id}); setUpdateModalVisible(false)}} onCancel={updateHandleCancel}>
                                         <InputLabel>Title</InputLabel>
-                                        <Input placeholder="input your title" allowClear onChange={handleTitleChange} />
+                                        <Input placeholder={inventory.title} allowClear onChange={handleTitleChange} />
                                         <br />
                                         <br />
-                                        <TextArea placeholder="Fill your description" allowClear onChange={handleDescriptionChange} />
+                                        <InputLabel>Description</InputLabel>
+                                        <TextArea placeholder={inventory.description} allowClear onChange={handleDescriptionChange} />
                                     </Modal>
-                                <Button className="update-button" type="primary" onClick={updateShowModal}>
-                                    Update
-                                </Button>
+                                    <Button className="update-button" type="primary" onClick={updateShowModal}>
+                                        Update
+                                    </Button>
                                     <Modal
                                         title="Delete Inventory"
                                         visible={modalVisible}
                                         onOk={() => { deleteInventory(inventory); setModalVisible(false)}} onCancel={handleCancel}>
                                         <h3>Are you sure you want to delete this inventory</h3>
                                     </Modal>
-                                <Button className="delete-button" type="danger" onClick={showModal}>
-                                    Delete
-                                </Button>
-                                    {/*<td><button*/}
-                                    {/*    className="update-custom-button"*/}
-                                    {/*    type="submit"*/}
-                                    {/*    onClick={() => editInventory({title: inventory.title, description, id: inventory.id})}*/}
-                                    {/*>*/}
-                                    {/*    Update Inventory*/}
-                                    {/*</button>*/}
-                                    {/*<button*/}
-                                    {/*    className="delete-custom-button"*/}
-                                    {/*    type="submit"*/}
-                                    {/*    onClick={() => deleteInventory(inventory)}*/}
-                                    {/*>*/}
-                                    {/*    Delete Inventory*/}
-                                    {/*</button>*/}
-                                    {/*</td>*/}
+                                    <Button className="delete-button" type="danger" onClick={showModal}>
+                                        Delete
+                                    </Button>
                                 </td>
                             </tr>
                             ))}
                         </table>
                     </div>
-                    <Modal
-                        title="Add Inventory"
-                        visible={createModalVisible}
-                        onOk={() => { addInventory({id: uuidv4(), title, description}); setCreateModalVisible(false)}} onCancel={createHandleCancel}>
-                        <InputLabel>Title</InputLabel>
-                        <Input placeholder="input your title" allowClear onChange={handleTitleChange} />
-                        <br />
-                        <br />
-                        <TextArea placeholder="Fill your description" allowClear onChange={handleDescriptionChange} />
-                    </Modal>
-                    <Button className="create-button" onClick={createShowModal}>
-                        Create
-                    </Button>
+                        <Modal
+                            title="Add Inventory"
+                            visible={createModalVisible}
+                            onOk={() => { addInventory({id: uuidv4(), title, description}); setCreateModalVisible(false)}} onCancel={createHandleCancel}>
+                            <InputLabel>Title</InputLabel>
+                            <Input placeholder="input your title" allowClear onChange={handleTitleChange} />
+                            <br />
+                            <br />
+                            <InputLabel>Description</InputLabel>
+                            <TextArea placeholder="Fill your description" allowClear onChange={handleDescriptionChange} />
+                        </Modal>
+                        <Button className="create-button" onClick={createShowModal}>
+                            Create
+                        </Button>
                 </div>
             </div>
         </div>
