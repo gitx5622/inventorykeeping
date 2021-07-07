@@ -2,15 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import "../../../styles/Landing/Landing.scss";
 import firebase from "../../../utils/firebase";
+import { Modal, Button } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
+import { Input } from 'antd';
+import {InputLabel} from "@material-ui/core";
+
+const { TextArea } = Input;
 
 const Landing = ({ history }) => {
     const [inventories, setInventories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
+    const [createModalVisible, setCreateModalVisible] = useState(false);
+    const [updateModalVisible, setUpdateModalVisible] = useState(false);
 
-    const ref = firebase.firestore().collection("inventories")
+    const showModal = () => {
+        setCreateModalVisible(true);
+    };
+
+    const createShowModal = () => {
+        setCreateModalVisible(true);
+    };
+
+    const updateShowModal = () => {
+        setCreateModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setCreateModalVisible(false);
+    };
+
+    const createHandleCancel = () => {
+        setCreateModalVisible(false);
+    };
+
+    const updateHandleCancel = () => {
+        setCreateModalVisible(false);
+    };
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value)
@@ -18,6 +48,7 @@ const Landing = ({ history }) => {
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value)
     }
+    const ref = firebase.firestore().collection("inventories")
     const getInventories = () => {
         setLoading(true);
         ref.onSnapshot((querySnapshot) => {
@@ -70,33 +101,8 @@ const Landing = ({ history }) => {
                     <h2>Inventory Keeping Web App</h2>
                 </div>
             </div>
-            <center><b><h2>Inventory Keeping of goods</h2></b></center>
+            <center><strong><h2>Inventory Records</h2></strong></center>
             <div className="body-section">
-                <div className="main-area">
-                    {/*<div className="create-inventory-details">*/}
-                    {/*    <h2 className="heading-add-inventory">Add an Inventory</h2>*/}
-                    {/*    <div className="form">*/}
-                    {/*        <label>Title</label><br/>*/}
-                    {/*        <input*/}
-                    {/*            className="inventory-input"*/}
-                    {/*            onChange={handleTitleChange}*/}
-                    {/*            type="text"*/}
-                    {/*        />*/}
-                    {/*        <label>Description</label><br/>*/}
-                    {/*        <input*/}
-                    {/*            className="inventory-input"*/}
-                    {/*            onChange={handleDescriptionChange}*/}
-                    {/*            type="text"*/}
-                    {/*        />*/}
-                    {/*        <br/>*/}
-                    {/*        <button*/}
-                    {/*            className="custom-button"*/}
-                    {/*            onClick={() => addInventory({id: uuidv4(), title, description})}*/}
-                    {/*            type="submit">Add Inventory*/}
-                    {/*        </button>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                </div>
                 <div className="inventory-list">
                     <h3>List of Inventories</h3><br/>
                     <div className="list-inventories">
@@ -115,26 +121,62 @@ const Landing = ({ history }) => {
                             <tr>
                                     <td><h4>{inventory.title}</h4></td>
                                     <td><h4>{inventory.description}</h4></td>
-                                    <td><button
-                                        className="update-custom-button"
-                                        type="submit"
-                                        onClick={() => editInventory({title: inventory.title, description, id: inventory.id})}
-                                    >
-                                        Update Inventory
-                                    </button>
-                                    <button
-                                        className="delete-custom-button"
-                                        type="submit"
-                                        onClick={() => deleteInventory(inventory)}
-                                    >
-                                        Delete Inventory
-                                    </button>
-                                    </td>
+                                <td>
+                                    <Modal
+                                        title="Update Inventory"
+                                        visible={updateModalVisible}
+                                        onOk={() => { editInventory({title: inventory.title, description, id: inventory.id}); setUpdateModalVisible(false)}} onCancel={updateHandleCancel}>
+                                        <InputLabel>Title</InputLabel>
+                                        <Input placeholder="input your title" allowClear onChange={handleTitleChange} />
+                                        <br />
+                                        <br />
+                                        <TextArea placeholder="Fill your description" allowClear onChange={handleDescriptionChange} />
+                                    </Modal>
+                                <Button className="update-button" type="primary" onClick={updateShowModal}>
+                                    Update
+                                </Button>
+                                    <Modal
+                                        title="Delete Inventory"
+                                        visible={modalVisible}
+                                        onOk={() => { deleteInventory(inventory); setModalVisible(false)}} onCancel={handleCancel}>
+                                        <h3>Are you sure you want to delete this inventory</h3>
+                                    </Modal>
+                                <Button className="delete-button" type="danger" onClick={showModal}>
+                                    Delete
+                                </Button>
+                                    {/*<td><button*/}
+                                    {/*    className="update-custom-button"*/}
+                                    {/*    type="submit"*/}
+                                    {/*    onClick={() => editInventory({title: inventory.title, description, id: inventory.id})}*/}
+                                    {/*>*/}
+                                    {/*    Update Inventory*/}
+                                    {/*</button>*/}
+                                    {/*<button*/}
+                                    {/*    className="delete-custom-button"*/}
+                                    {/*    type="submit"*/}
+                                    {/*    onClick={() => deleteInventory(inventory)}*/}
+                                    {/*>*/}
+                                    {/*    Delete Inventory*/}
+                                    {/*</button>*/}
+                                    {/*</td>*/}
+                                </td>
                             </tr>
                             ))}
                         </table>
-
                     </div>
+                    <Modal
+                        title="Add Inventory"
+                        visible={createModalVisible}
+                        onOk={() => { addInventory({id: uuidv4(), title, description}); setCreateModalVisible(false)}} onCancel={createHandleCancel}>
+                        <InputLabel>Title</InputLabel>
+                        <Input placeholder="input your title" allowClear onChange={handleTitleChange} />
+                        <br />
+                        <br />
+                        <TextArea placeholder="Fill your description" allowClear onChange={handleDescriptionChange} />
+                    </Modal>
+                    <Button className="create-button" onClick={createShowModal}>
+                        Create
+                    </Button>
                 </div>
             </div>
         </div>
