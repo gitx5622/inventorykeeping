@@ -72,7 +72,6 @@ const Landing = () => {
     // EDIT AN INVENTORY
     const editInventory = (inventory) => {
         const updatedInventory = {
-            id : uuidv4(),
             title,
             description
         }
