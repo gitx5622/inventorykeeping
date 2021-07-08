@@ -70,9 +70,15 @@ const Landing = () => {
             })
     }
     // EDIT AN INVENTORY
-    const editInventory = (updatedInventory) => {
+    const editInventory = (inventory) => {
+        const updatedInventory = {
+            id : uuidv4(),
+            title,
+            description
+        }
+        setLoading();
         collection
-            .doc(updatedInventory.id)
+            .doc(inventory.id)
             .update(updatedInventory)
             .catch((err) => {
                 message.error(err, 5);
@@ -102,7 +108,7 @@ const Landing = () => {
                     <h2>Inventory Keeping Web App</h2>
                 </div>
             </div>
-            <center><h2 className="body-title">Inventory Records</h2></center>
+            <center><h2 className="body-title">Tanui industries Inventory Records</h2></center>
             <div className="body-section">
                 <div className="inventory-list">
                     <div className="list-inventories">
@@ -124,13 +130,13 @@ const Landing = () => {
                                     <Modal
                                         title="Update Inventory"
                                         visible={updateModalVisible}
-                                        onOk={() => { editInventory({title, description, id: inventory.id}); setUpdateModalVisible(false)}} onCancel={updateHandleCancel}>
+                                        onOk={() => { editInventory(inventory); setUpdateModalVisible(false)}} onCancel={updateHandleCancel}>
                                         <InputLabel>Title</InputLabel>
-                                        <Input placeholder={inventory.title} allowClear onChange={handleTitleChange} />
+                                        <Input allowClear onChange={handleTitleChange} />
                                         <br />
                                         <br />
                                         <InputLabel>Description</InputLabel>
-                                        <TextArea placeholder={inventory.description} allowClear onChange={handleDescriptionChange} />
+                                        <TextArea allowClear onChange={handleDescriptionChange} />
                                     </Modal>
                                     <Button className="update-button" type="primary" onClick={updateShowModal}>
                                         Update
@@ -152,7 +158,7 @@ const Landing = () => {
                         <Modal
                             title="Add Inventory"
                             visible={createModalVisible}
-                            onOk={() => { addInventory({id: uuidv4(), title, description}); setCreateModalVisible(false)}} onCancel={createHandleCancel}>
+                            onOk={() => { addInventory({title, description, id: uuidv4()}); setCreateModalVisible(false)}} onCancel={createHandleCancel}>
                             <InputLabel>Title</InputLabel>
                             <Input placeholder="input your title" allowClear onChange={handleTitleChange} />
                             <br />
