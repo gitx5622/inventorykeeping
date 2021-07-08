@@ -1,4 +1,4 @@
-# Tanui industries Inventroy Keeping Web App Frontend
+# Tanui industries Inventory Keeping Web App Frontend
 
 A ReactJS applicaton that is design for individual & organization merchants
 
@@ -29,4 +29,6 @@ Use `npm start` command
 
 ## 5. Deploy to Netlify
 
-- Visit app at http://ictlife-merchant-portal.herokuapp.com
+- Visit app at https://inventorykeeping.toprated.co.ke  
+              or 
+              https://inventorykeeping.netlify.app
